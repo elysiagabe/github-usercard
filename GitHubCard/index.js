@@ -3,6 +3,18 @@
            https://api.github.com/users/<your name>
 */
 
+// UNCOMMENT WHEN READY TO PULL IN DATA
+axios.get('https://api.github.com/users/elysiagabe')
+.then(response => {
+  console.log(response.data);
+  // loop thru here?
+  
+})
+.catch(error => {
+  console.log("Error: data not returned", error);
+})
+
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -46,6 +58,49 @@ const followersArray = [];
 
 */
 
+// set parent element to append card to
+const parentDiv = document.querySelector(".cards");
+
+function githubUserCard(object) {
+  // set up structure
+  const card = document.createElement("div"),
+    image = document.createElement("img"),
+    infoContainer = document.createElement("div"),
+    name = document.createElement("h3"),
+    username = document.createElement("p"),
+    location = document.createElement("p"),
+    profile = document.createElement("p"),
+    profileURL = document.createElement("a"),
+    followersCount = document.createElement("p"),
+    followingCount = document.createElement("p"),
+    bio = documnet.createElement("p");
+
+  // add classes
+  card.classList.add("card");
+  infoContainer.classList.add("card-info");
+  name.classList.add("name");
+  username.classList.add("username");
+
+  // add content 
+  image.src = object.avatar_url;
+  name.textContent = object.name;
+  username.textContent = object.login;
+  location.textContent = "Location: ${object.location}";
+  profile.textContent = "Profile: ";
+  profileURL.src = object.html_url;
+  followersCount.textContent = "Followers: ${object.followers}";
+  followingCount.textContent = "Following: ${object.following}";
+  bio.textContent = "Bio: ${object.bio}";
+
+  // append elements
+  profile.append(profileURL);
+  infoContainer.append(name, username, location, profile, followersCount, followingCount, bio);
+  card.append(image, infoContainer);
+
+  // return statement
+  return card;
+}
+
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
@@ -53,3 +108,4 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
