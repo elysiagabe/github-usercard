@@ -7,8 +7,8 @@
 axios.get('https://api.github.com/users/elysiagabe')
 .then(response => {
   console.log(response.data);
-  // loop thru here?
-  
+  // append data to parent here
+  parentDiv.appendChild(githubUserCard(response.data));
 })
 .catch(error => {
   console.log("Error: data not returned", error);
@@ -73,7 +73,7 @@ function githubUserCard(object) {
     profileURL = document.createElement("a"),
     followersCount = document.createElement("p"),
     followingCount = document.createElement("p"),
-    bio = documnet.createElement("p");
+    bio = document.createElement("p");
 
   // add classes
   card.classList.add("card");
@@ -85,21 +85,24 @@ function githubUserCard(object) {
   image.src = object.avatar_url;
   name.textContent = object.name;
   username.textContent = object.login;
-  location.textContent = "Location: ${object.location}";
-  profile.textContent = "Profile: ";
-  profileURL.src = object.html_url;
-  followersCount.textContent = "Followers: ${object.followers}";
-  followingCount.textContent = "Following: ${object.following}";
-  bio.textContent = "Bio: ${object.bio}";
+  location.textContent = "Location: " + object.location;
+  profileURL.href = object.html_url;
+  profile.textContent = "Profile: " + profileURL;
+  followersCount.textContent = "Followers: " + object.followers;
+  followingCount.textContent = "Following: " + object.following;
+  bio.textContent = "Bio: " + object.bio;
 
   // append elements
   profile.append(profileURL);
   infoContainer.append(name, username, location, profile, followersCount, followingCount, bio);
   card.append(image, infoContainer);
 
+  console.log(card);
   // return statement
   return card;
 }
+
+
 
 /* List of LS Instructors Github username's: 
   tetondan
