@@ -16,20 +16,6 @@ axios.get('https://api.github.com/users/elysiagabe')
 })
 
 
-// DOESN'T WORK B/C THIS CALL WON'T RETURN ALL THE INFORMATION DESIRED
-// axios.get('https://api.github.com/users/elysiagabe/followers')
-// .then(response => {
-//   console.log(response.data);
-//   // append data to parent here
-//   response.data.forEach(item => {
-//     parentDiv.appendChild(githubUserCard(item));
-//   })
-// })
-// .catch(error => {
-//   console.log("Error: data not returned", error);
-// })
-
-
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -61,16 +47,37 @@ const followersArray = [
   "ajablanco"
 ];
 
-followersArray.forEach(follower => {
-  axios.get('https://api.github.com/users/' + follower)
-  .then(response => {
-    console.log(response.data)
-    let followerData = response.data;
-    parentDiv.appendChild(githubUserCard(followerData));
+// followersArray.forEach(follower => {
+//   axios.get('https://api.github.com/users/' + follower)
+//   .then(response => {
+//     console.log(response.data)
+//     let followerData = response.data;
+//     parentDiv.appendChild(githubUserCard(followerData));
+//   })
+//   .catch(error => {
+//     console.log("Error: data not returned", error);
+//   })
+// })
+
+// STRETCH -- FOLLOWERS
+axios.get('https://api.github.com/users/elysiagabe/followers')
+.then(response => {
+  console.log(response.data)
+  let followers = response.data;
+  followers.forEach(follower => {
+    axios.get(`https://api.github.com/users/${follower.login}`)
+    .then(res => {
+      console.log(res)
+      let followerData = res.data;
+      parentDiv.appendChild(githubUserCard(followerData));
+    })
+    .catch(error => {
+      console.log(`There's an error: ${error}`);
+    })
   })
-  .catch(error => {
-    console.log("Error: data not returned", error);
-  })
+})
+.catch(err => {
+  console.log(`There's an error: ${error}`)
 })
 
 /* Step 3: Create a function that accepts a single object as its only argument,
