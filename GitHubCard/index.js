@@ -9,10 +9,25 @@ axios.get('https://api.github.com/users/elysiagabe')
   console.log(response.data);
   // append data to parent here
   parentDiv.appendChild(githubUserCard(response.data));
+  
 })
 .catch(error => {
   console.log("Error: data not returned", error);
 })
+
+
+// DOESN'T WORK B/C THIS CALL WON'T RETURN ALL THE INFORMATION DESIRED
+// axios.get('https://api.github.com/users/elysiagabe/followers')
+// .then(response => {
+//   console.log(response.data);
+//   // append data to parent here
+//   response.data.forEach(item => {
+//     parentDiv.appendChild(githubUserCard(item));
+//   })
+// })
+// .catch(error => {
+//   console.log("Error: data not returned", error);
+// })
 
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -36,7 +51,27 @@ axios.get('https://api.github.com/users/elysiagabe')
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "priyadarshy",
+  "chavli",
+  "thericktastic",
+  "teaguehannam",
+  "ardissam0",
+  "NataliaBeckstead",
+  "ajablanco"
+];
+
+followersArray.forEach(follower => {
+  axios.get('https://api.github.com/users/' + follower)
+  .then(response => {
+    console.log(response.data)
+    let followerData = response.data;
+    parentDiv.appendChild(githubUserCard(followerData));
+  })
+  .catch(error => {
+    console.log("Error: data not returned", error);
+  })
+})
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -86,8 +121,9 @@ function githubUserCard(object) {
   name.textContent = object.name;
   username.textContent = object.login;
   location.textContent = "Location: " + object.location;
+  profile.textContent = "Profile: ";
   profileURL.href = object.html_url;
-  profile.textContent = "Profile: " + profileURL;
+  profileURL.textContent = object.html_url;
   followersCount.textContent = "Followers: " + object.followers;
   followingCount.textContent = "Following: " + object.following;
   bio.textContent = "Bio: " + object.bio;
